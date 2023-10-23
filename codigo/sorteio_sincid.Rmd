@@ -1,0 +1,116 @@
+---
+title: "SORTEIO I SINCID LINDA - 28/10/2023"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+    theme: bootstrap
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set("'D:/sorteio-i-sincid-linda'") 
+
+# Diretorio da Trabalho
+setwd('D:/sorteio-i-sincid-linda')
+
+# Carregando as bibliotecas necessárias
+if (!("dplyr") %in% installed.packages()) install.packages("dplyr")
+if (!("readr") %in% installed.packages()) install.packages("readr")
+if (!("geobr") %in% installed.packages()) install.packages("geobr")
+if (!("scales") %in% installed.packages()) install.packages("scales")
+if (!("ggspatial") %in% installed.packages()) install.packages("ggspatial")
+if (!("kableExtra") %in% installed.packages()) install.packages("kableExtra")
+if (!("knitr") %in% installed.packages()) install.packages("knitr")
+
+library(ggplot2) # Visualizacao dos dados
+library(dplyr)   # Preparacao de dados
+library(readr)   # Importacao dos dados
+library(geobr)   # Mapa do Brasil
+library(scales)
+library(ggspatial)
+library(flexdashboard)
+library(knitr)
+library(kableExtra)
+
+# Dataframe Inscricoes Importacao arquivo CSV
+df.inscritos <-read.csv("./dados/INSCRITOS.csv", header = TRUE, sep = ";", quote = "\"", dec = ".")
+
+# Dataframe Inscricoes Nao Sorteadas
+df.sorteio <- df.inscritos %>% filter(Sorteado == "N")
+
+# Qtde de Inscricoes para Sorteio
+Qtde_inscritos <- nrow(df.inscritos)
+
+# Numero Sorteado
+num_inscricao_sorteado <- sample(df.sorteio$Num_inscricao,1)
+num_inscricao_sorteado
+
+# DataFrame Inscricao Sorteada
+df.sorteado <- df.inscritos[df.inscritos$Num_inscricao == num_inscricao_sorteado,]
+df.inscritos[df.inscritos$Num_inscricao == num_inscricao_sorteado,]$Sorteado = "S"
+df.inscritos[df.inscritos$Num_inscricao == num_inscricao_sorteado,]$DH_Sorteio = as.character(Sys.time())
+
+# Dados do Sorteado
+Nome_sorteado <- df.sorteado$Nome
+Cidade_sorteado <- df.sorteado$Cidade
+UF_sorteado <-  df.sorteado$UF
+Email_sorteado <-  substring(df.sorteado$Email,1,6)
+Telefone_sorteado <- substring(df.sorteado$Telefone,1,6)
+Modalidade_sorteado <- df.sorteado$Modalidade
+
+# Mostrar o sorteado
+k_sorteado <- data.frame(Nome_sorteado, paste(Telefone_sorteado, '*******'), paste(Email_sorteado,'********'))
+names(k_sorteado) <- c("Nome", "Telefone", "Email")
+                         
+# Atualiza de Inscricoes para Sorteio
+df.sorteio <- df.inscritos %>% filter(Sorteado == "N")
+Qtde_Sorteio <- nrow(df.sorteio)
+
+# Gravar arquivo INSCRITO.CSV atualizado
+write_csv2(df.inscritos, file='./dados/INSCRITOS.csv')
+
+rm(df.sorteado)
+rm(df.inscritos)
+rm(df.sorteio)
+unlink("codigo/sorteio_sincid_cache", recursive = TRUE)
+
+```
+
+Column {data-width=850}
+-----------------------------------------------------------------------
+
+### 
+```{r picture, echo = F, fig.cap = "", out.width = '100%'}
+knitr::include_graphics("d:/SINCID_SORTEIO/imagens/SINCID.jpeg")
+```
+
+Column {data-width=150}
+-----------------------------------------------------------------------
+### Inscritos
+```{r}
+valueBox(Qtde_inscritos, caption = "", color="black")
+```
+### Sorteados
+```{r}
+valueBox(Qtde_inscritos-Qtde_Sorteio, caption = "", color="blue")
+```
+### Inscritos Próximo Sorteio
+```{r}
+valueBox(Qtde_Sorteio, caption = "", color="lightblue")
+```
+
+
+Column {data-width=150}
+-----------------------------------------------------------------------
+### SORTEADO(A)
+```{r}
+  k_sorteado %>%
+  kable() %>%
+  kable_styling("striped", full_width = F, font_size = 26) %>%
+  row_spec(1, bold = T, color = "white", background = "#D7261E")
+```
+
+
+
+
+
