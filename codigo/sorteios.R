@@ -20,11 +20,35 @@ library(kableExtra)
 
 
 # Diretorio de Trabalho
-<<<<<<< HEAD
 #setwd('D:/SINCID_SORTEIO')
-=======
-setwd('D:/SINCID_SORTEIO')
->>>>>>> ba22493f1ce655cf15d62189a8caa18d1f1acebd
+
+# Solução alternativa !
+get_os <- function(){
+  sysinf <- Sys.info()
+  if (!is.null(sysinf)){
+    os <- sysinf['sysname']
+    if (os == 'Darwin')
+      os <- "osx"
+  } else { ## mystery machine
+    os <- .Platform$OS.type
+    if (grepl("^darwin", R.version$os))
+      os <- "osx"
+    if (grepl("linux-gnu", R.version$os))
+      os <- "linux"
+  }
+  tolower(os)
+}
+
+if (get_os() == "windows") {
+  # Diretorio da Trabalho
+  setwd('D:/SINCID_SORTEIO')
+}
+
+if (get_os() == "osx") {
+  # Diretorio da Trabalho
+  setwd("/Users/joaopedroalbino/Downloads/GitHub/sorteio-i-sincid-linda")
+}
+
 
 # Dataframe Inscricoes Importacao arquivo CSV
 df.inscritos <-read.csv("./dados/INSCRITOS.csv", header = TRUE, sep = ";", quote = "\"", dec = ".")
@@ -54,7 +78,6 @@ Modalidade_sorteado <- df.sorteado$Modalidade
 
 # Mostrar o sorteado
 sorteado <- data.frame(Nome_sorteado)
-
 
 # Gravar arquivo INSCRITO.CSV atualizado
 write_csv2(df.inscritos, file='./dados/INSCRITOS.csv')

@@ -1,9 +1,7 @@
 ---
-<<<<<<< HEAD
-title: "SORTEIO SINCID LINDA"
-=======
 title: "SORTEIO I SINCID LINDA - 28/10/2023"
->>>>>>> ba22493f1ce655cf15d62189a8caa18d1f1acebd
+author: Marcelo José dos Santos
+
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -12,7 +10,6 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-<<<<<<< HEAD
 #knitr::opts_chunk$set("'D:/SINCID_SORTEIO'") 
 # Diretorio da Trabalho
 #setwd('D:/SINCID_SORTEIO')
@@ -45,12 +42,6 @@ if (get_os() == "osx") {
 # Diretorio da Trabalho
   setwd("/Users/joaopedroalbino/Downloads/GitHub/sorteio-i-sincid-linda")
 }
-=======
-knitr::opts_chunk$set("'D:/sorteio-i-sincid-linda'") 
-
-# Diretorio da Trabalho
-setwd('D:/sorteio-i-sincid-linda')
->>>>>>> ba22493f1ce655cf15d62189a8caa18d1f1acebd
 
 # Carregando as bibliotecas necessárias
 if (!("dplyr") %in% installed.packages()) install.packages("dplyr")
@@ -120,15 +111,11 @@ Column {data-width=850}
 
 ### 
 ```{r picture, echo = F, fig.cap = "", out.width = '100%'}
-<<<<<<< HEAD
+
 if (get_os() == "windows") knitr::include_graphics("d:/SINCID_SORTEIO/imagens/SINCID.jpeg")
 
 if (get_os() == "osx") knitr::include_graphics("/Users/joaopedroalbino/Downloads/GitHub/sorteio-i-sincid-linda/imagens/SINCID.jpeg")
 
-
-=======
-knitr::include_graphics("d:/SINCID_SORTEIO/imagens/SINCID.jpeg")
->>>>>>> ba22493f1ce655cf15d62189a8caa18d1f1acebd
 ```
 
 Column {data-width=150}
