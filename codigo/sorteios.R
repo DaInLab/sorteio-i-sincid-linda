@@ -20,7 +20,11 @@ library(kableExtra)
 
 
 # Diretorio de Trabalho
+<<<<<<< HEAD
 #setwd('D:/SINCID_SORTEIO')
+=======
+setwd('D:/SINCID_SORTEIO')
+>>>>>>> ba22493f1ce655cf15d62189a8caa18d1f1acebd
 
 # Dataframe Inscricoes Importacao arquivo CSV
 df.inscritos <-read.csv("./dados/INSCRITOS.csv", header = TRUE, sep = ";", quote = "\"", dec = ".")
