@@ -12,10 +12,10 @@ output:
 # Renomear arquivo para LISTA_PARTICIPANTES.xlsx
 # Criar 2 colunas : Sorteado e DH_Sorteio
 
-knitr::opts_chunk$set("'D:/sorteio-i-sincid-linda'") 
+knitr::opts_chunk$set("'c:/sorteio-i-sincid-linda'") 
 
 # Diretorio da Trabalho
-setwd('D:/sorteio-i-sincid-linda')
+setwd('c:/sorteio-i-sincid-linda')
 
 # Carregando as bibliotecas necessárias
 if (!("dplyr") %in% installed.packages()) install.packages("dplyr")
