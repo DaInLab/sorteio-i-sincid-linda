@@ -21,7 +21,39 @@ library(knitr)
 library(kableExtra)
 
 # Diretorio de Trabalho
+<<<<<<< HEAD
 setwd('D:/sorteio-i-sincid-linda')
+=======
+#setwd('D:/SINCID_SORTEIO')
+
+# Solução alternativa !
+get_os <- function(){
+  sysinf <- Sys.info()
+  if (!is.null(sysinf)){
+    os <- sysinf['sysname']
+    if (os == 'Darwin')
+      os <- "osx"
+  } else { ## mystery machine
+    os <- .Platform$OS.type
+    if (grepl("^darwin", R.version$os))
+      os <- "osx"
+    if (grepl("linux-gnu", R.version$os))
+      os <- "linux"
+  }
+  tolower(os)
+}
+
+if (get_os() == "windows") {
+  # Diretorio da Trabalho
+  setwd('D:/SINCID_SORTEIO')
+}
+
+if (get_os() == "osx") {
+  # Diretorio da Trabalho
+  setwd("/Users/joaopedroalbino/Downloads/GitHub/sorteio-i-sincid-linda")
+}
+
+>>>>>>> f5e8b7edbb9f202b0047c7a005c29bbd26be44b0
 
 # Dataframe Inscricoes Importacao arquivo CSV
 df.participantes <- read_excel("./dados/ListaCredenciamento.xlsx")
@@ -49,6 +81,10 @@ Cidade_sorteado <- df.sorteado$Cidade
 UF_sorteado <- df.sorteado$UF
 
 # Mostrar o sorteado
+<<<<<<< HEAD
+=======
+sorteado <- data.frame(Nome_sorteado)
+>>>>>>> f5e8b7edbb9f202b0047c7a005c29bbd26be44b0
 
 # Gravar arquivo INSCRITO.CSV atualizado
 writexl::write_xlsx(df.participantes, './dados/ListaCredenciamento.xlsx')

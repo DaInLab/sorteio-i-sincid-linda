@@ -1,5 +1,7 @@
 ---
 title: "SORTEIO I SINCID LINDA - 28/10/2023"
+author: Marcelo José dos Santos
+
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -8,14 +10,47 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+<<<<<<< HEAD
 
 # Renomear arquivo para LISTA_PARTICIPANTES.xlsx
 # Criar 2 colunas : Sorteado e DH_Sorteio
 
 knitr::opts_chunk$set("'D:/sorteio-i-sincid-linda'") 
 
+=======
+#knitr::opts_chunk$set("'D:/SINCID_SORTEIO'") 
+>>>>>>> f5e8b7edbb9f202b0047c7a005c29bbd26be44b0
 # Diretorio da Trabalho
-setwd('D:/sorteio-i-sincid-linda')
+#setwd('D:/SINCID_SORTEIO')
+
+# Solução alternativa !
+get_os <- function(){
+      sysinf <- Sys.info()
+      if (!is.null(sysinf)){
+          os <- sysinf['sysname']
+          if (os == 'Darwin')
+              os <- "osx"
+      } else { ## mystery machine
+          os <- .Platform$OS.type
+          if (grepl("^darwin", R.version$os))
+              os <- "osx"
+          if (grepl("linux-gnu", R.version$os))
+              os <- "linux"
+      }
+      tolower(os)
+}
+
+if (get_os() == "windows") {
+  knitr::opts_chunk$set("'D:/SINCID_SORTEIO'") 
+# Diretorio da Trabalho
+  setwd('D:/SINCID_SORTEIO')
+}
+
+if (get_os() == "osx") {
+  knitr::opts_chunk$set("/Users/joaopedroalbino/Downloads/GitHub/sorteio-i-sincid-linda") 
+# Diretorio da Trabalho
+  setwd("/Users/joaopedroalbino/Downloads/GitHub/sorteio-i-sincid-linda")
+}
 
 # Carregando as bibliotecas necessárias
 if (!("dplyr") %in% installed.packages()) install.packages("dplyr")
@@ -83,7 +118,11 @@ writexl::write_xlsx(df.participantes, './dados/ListaCredenciamento.xlsx')
 ### 
 
 ```{r picture, echo = F, fig.cap = "", out.width = '100%'}
-knitr::include_graphics("d:/SINCID_SORTEIO/imagens/SINCID.jpeg")
+
+if (get_os() == "windows") knitr::include_graphics("d:/SINCID_SORTEIO/imagens/SINCID.jpeg")
+
+if (get_os() == "osx") knitr::include_graphics("/Users/joaopedroalbino/Downloads/GitHub/sorteio-i-sincid-linda/imagens/SINCID.jpeg")
+
 ```
 
 ## Column {data-width="150"}
