@@ -44,7 +44,7 @@ df.participantes <- read_excel("./dados/ListaCredenciamento.xlsx")
 Qtde_Participantes <- nrow(df.participantes)
 
 # Dataframe Inscricoes Nao Sorteadas
-df.sorteio <- df.participantes %>% filter(is.na(Sorteado))
+df.sorteio <- df.participantes %>% filter(is.na(Sorteado) & Credenciado == 'sim')
 
 # Qtde de Inscricoes para Sorteio
 Qtde_Sorteio <- nrow(df.sorteio)
@@ -88,7 +88,7 @@ knitr::include_graphics("d:/SINCID_SORTEIO/imagens/SINCID.jpeg")
 
 ## Column {data-width="150"}
 
-### Participantes
+### Participantes Sorteio
 
 ```{r}
 valueBox(Qtde_Participantes, caption = "", color="black")
