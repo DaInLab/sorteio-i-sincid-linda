@@ -34,11 +34,8 @@ library(flexdashboard)
 library(knitr)
 library(kableExtra)
 
-# Diretorio de Trabalho
-setwd('D:/sorteio-i-sincid-linda')
-
 # Dataframe Inscricoes Importacao arquivo CSV
-df.participantes <- read_excel("./dados/ListaCredenciamento.xlsx")
+df.participantes <- read_excel("D:/sorteio-i-sincid-linda/dados/ListaCredenciamento.xlsx")
 
 # Qtde Participantes
 Qtde_Participantes <- nrow(df.participantes)
@@ -74,7 +71,7 @@ df.sorteio <- df.participantes %>% filter(is.na(Sorteado))
 Qtde_Sorteio <- nrow(df.sorteio)
 
 # Gravar arquivo atualizado
-writexl::write_xlsx(df.participantes, './dados/ListaCredenciamento.xlsx')
+writexl::write_xlsx(df.participantes, 'D:/sorteio-i-sincid-linda/dados/ListaCredenciamento.xlsx')
 
 ```
 
