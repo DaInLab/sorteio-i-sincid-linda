@@ -8,6 +8,10 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+
+# Renomear arquivo para LISTA_PARTICIPANTES.xlsx
+# Criar 2 colunas : Sorteado e DH_Sorteio
+
 knitr::opts_chunk$set("'D:/sorteio-i-sincid-linda'") 
 
 # Diretorio da Trabalho
@@ -16,101 +20,99 @@ setwd('D:/sorteio-i-sincid-linda')
 # Carregando as bibliotecas necessárias
 if (!("dplyr") %in% installed.packages()) install.packages("dplyr")
 if (!("readr") %in% installed.packages()) install.packages("readr")
-if (!("geobr") %in% installed.packages()) install.packages("geobr")
-if (!("scales") %in% installed.packages()) install.packages("scales")
-if (!("ggspatial") %in% installed.packages()) install.packages("ggspatial")
+if (!("readxl") %in% installed.packages()) install.packages("readxl")
+if (!("writexl") %in% installed.packages()) install.packages("writexl")
 if (!("kableExtra") %in% installed.packages()) install.packages("kableExtra")
 if (!("knitr") %in% installed.packages()) install.packages("knitr")
 
-library(ggplot2) # Visualizacao dos dados
+
 library(dplyr)   # Preparacao de dados
-library(readr)   # Importacao dos dados
-library(geobr)   # Mapa do Brasil
-library(scales)
-library(ggspatial)
+library(readr)  # Importacao dos dados
+library(readxl)  # Importacao dos dados
+library(writexl) # Importacao dos dados
 library(flexdashboard)
 library(knitr)
 library(kableExtra)
 
+# Diretorio de Trabalho
+setwd('D:/sorteio-i-sincid-linda')
+
 # Dataframe Inscricoes Importacao arquivo CSV
-df.inscritos <-read.csv("./dados/INSCRITOS.csv", header = TRUE, sep = ";", quote = "\"", dec = ".")
+df.participantes <- read_excel("./dados/ListaCredenciamento.xlsx")
+
+# Qtde Participantes
+Qtde_Participantes <- nrow(df.participantes)
 
 # Dataframe Inscricoes Nao Sorteadas
-df.sorteio <- df.inscritos %>% filter(Sorteado == "N")
+df.sorteio <- df.participantes %>% filter(is.na(Sorteado))
 
 # Qtde de Inscricoes para Sorteio
-Qtde_inscritos <- nrow(df.inscritos)
+Qtde_Sorteio <- nrow(df.sorteio)
 
-# Numero Sorteado
-num_inscricao_sorteado <- sample(df.sorteio$Num_inscricao,1)
-num_inscricao_sorteado
+# ID Sorteado
+id_sorteado <- sample(df.sorteio$ID,1)
+id_sorteado
 
 # DataFrame Inscricao Sorteada
-df.sorteado <- df.inscritos[df.inscritos$Num_inscricao == num_inscricao_sorteado,]
-df.inscritos[df.inscritos$Num_inscricao == num_inscricao_sorteado,]$Sorteado = "S"
-df.inscritos[df.inscritos$Num_inscricao == num_inscricao_sorteado,]$DH_Sorteio = as.character(Sys.time())
+df.sorteado <- df.participantes[df.participantes$ID == id_sorteado,]
+
+df.participantes[df.participantes$ID == id_sorteado,]$Sorteado = "S"
+df.participantes[df.participantes$ID == id_sorteado,]$DH_Sorteio = as.character(Sys.time())
 
 # Dados do Sorteado
 Nome_sorteado <- df.sorteado$Nome
+Email_sorteado <-  df.sorteado$`E-mail`
 Cidade_sorteado <- df.sorteado$Cidade
-UF_sorteado <-  df.sorteado$UF
-Email_sorteado <-  substring(df.sorteado$Email,1,6)
-Telefone_sorteado <- substring(df.sorteado$Telefone,1,6)
-Modalidade_sorteado <- df.sorteado$Modalidade
+UF_sorteado <- df.sorteado$UF
 
 # Mostrar o sorteado
-k_sorteado <- data.frame(Nome_sorteado, paste(Telefone_sorteado, '*******'), paste(Email_sorteado,'********'))
-names(k_sorteado) <- c("Nome", "Telefone", "Email")
+k_sorteado <- data.frame(Nome_sorteado, Cidade_sorteado, UF_sorteado, paste(substring(Email_sorteado,1,5),'********'))
+names(k_sorteado) <- c("Nome", "Cidade", "UF", "Email")
                          
 # Atualiza de Inscricoes para Sorteio
-df.sorteio <- df.inscritos %>% filter(Sorteado == "N")
+df.sorteio <- df.participantes %>% filter(is.na(Sorteado))
 Qtde_Sorteio <- nrow(df.sorteio)
 
-# Gravar arquivo INSCRITO.CSV atualizado
-write_csv2(df.inscritos, file='./dados/INSCRITOS.csv')
-
-rm(df.sorteado)
-rm(df.inscritos)
-rm(df.sorteio)
-unlink("codigo/sorteio_sincid_cache", recursive = TRUE)
+# Gravar arquivo atualizado
+writexl::write_xlsx(df.participantes, './dados/ListaCredenciamento.xlsx')
 
 ```
 
-Column {data-width=850}
------------------------------------------------------------------------
+## Column {data-width="850"}
 
 ### 
+
 ```{r picture, echo = F, fig.cap = "", out.width = '100%'}
 knitr::include_graphics("d:/SINCID_SORTEIO/imagens/SINCID.jpeg")
 ```
 
-Column {data-width=150}
------------------------------------------------------------------------
-### Inscritos
+## Column {data-width="150"}
+
+### Participantes
+
 ```{r}
-valueBox(Qtde_inscritos, caption = "", color="black")
+valueBox(Qtde_Participantes, caption = "", color="black")
 ```
+
 ### Sorteados
+
 ```{r}
-valueBox(Qtde_inscritos-Qtde_Sorteio, caption = "", color="blue")
+valueBox(Qtde_Participantes-Qtde_Sorteio, caption = "", color="blue")
 ```
+
 ### Inscritos Próximo Sorteio
+
 ```{r}
 valueBox(Qtde_Sorteio, caption = "", color="lightblue")
 ```
 
+## Column {data-width="150"}
 
-Column {data-width=150}
------------------------------------------------------------------------
 ### SORTEADO(A)
+
 ```{r}
   k_sorteado %>%
   kable() %>%
-  kable_styling("striped", full_width = F, font_size = 26) %>%
+  kable_styling("striped", full_width = T, font_size = 30) %>%
   row_spec(1, bold = T, color = "white", background = "#D7261E")
 ```
-
-
-
-
-
