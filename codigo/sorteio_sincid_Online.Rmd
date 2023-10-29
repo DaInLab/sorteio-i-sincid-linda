@@ -41,7 +41,7 @@ df.participantes <- read_excel("c:/sorteio-i-sincid-linda/dados/ListaCredenciame
 Qtde_Participantes <- nrow(df.participantes)
 
 # Dataframe Inscricoes Nao Sorteadas
-df.sorteio <- df.participantes %>% filter(is.na(Sorteado)&(Credenciado=="sim"))
+df.sorteio <- df.participantes %>% filter(is.na(Sorteado)&(Credenciado=="sim")&(Categoria=="Online"))
 
 # Qtde de Inscricoes para Sorteio
 Qtde_Sorteio <- nrow(df.sorteio)
@@ -67,7 +67,7 @@ k_sorteado <- data.frame(Nome_sorteado, Cidade_sorteado, UF_sorteado, paste(subs
 names(k_sorteado) <- c("Nome", "Cidade", "UF", "Email")
                          
 # Atualiza de Inscricoes para Sorteio
-df.sorteio <- df.participantes %>% filter(is.na(Sorteado)&(Credenciado=="sim"))
+df.sorteio <- df.participantes %>% filter(is.na(Sorteado)&(Credenciado=="sim")&(Categoria=="Online"))
 
 Qtde_Sorteio <- nrow(df.sorteio)
 
@@ -86,7 +86,7 @@ knitr::include_graphics("c:/sorteio-i-sincid-linda/imagens/SINCID.jpeg")
 
 ## Column {data-width="150"}
 
-### TODOS - Credenciados - Não Sorteados
+### ONLINE - Credenciados - Não Sorteados
 
 ```{r}
 valueBox(Qtde_Sorteio, caption = "", color="black")
